@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>Hexo</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_859455_eaq7v6w8ktj.css">
+<meta name="generator" content="Hexo 5.1.0"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                首页
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                归档
+            </a>
+            
+
+            
+            <a href="/tags" class="header-nav-link">
+                标签
+            </a>
+            
+
+            
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="mobile-nav-title">
+            <a href="/" class="mobile-nav-title-link">mnikn's Blog</a>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">首页</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">归档</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-tag"></i>
+                <a href="/tags" class="mobile-nav-link">标签</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-about"></i>
+                <a href="/about/" class="mobile-nav-link">关于</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="posts">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">Lisp解释器的实现--默认操作符的实现(6)</h2>
+            <div class="post-meta">
+                <span class="post-time">2017-12-06</span>
+                
+                <span class="post-category">
+                    
+                    <a class="category" href="/categories/lisp%E8%A7%A3%E9%87%8A%E5%99%A8%E5%AE%9E%E7%8E%B0/">lisp解释器实现</a>
+                    
+                </span>
+                
+                <span class="post-visit"> 阅读次数：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">默认操作符的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-Evaluator-%E9%87%8C%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="toc-text">在 Evaluator 里设置默认操作符</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">回到顶部</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>在上文中，我们提到了 <code>Evaluator</code> 有默认的操作符，本文将实现这些操作符。</p>
+<a id="more"></a>
+
+<h2 id="默认操作符的实现"><a href="#默认操作符的实现" class="headerlink" title="默认操作符的实现"></a>默认操作符的实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">accumulate</span>(<span class="params">proc,init,args</span>):</span></span><br><span class="line">    result = init</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> args:</span><br><span class="line">        result = proc(result,i)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">*args</span>):</span></span><br><span class="line">    <span class="keyword">return</span> accumulate(<span class="keyword">lambda</span> a,b:a + b,<span class="number">0</span>,args)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">subtract</span>(<span class="params">*args</span>):</span></span><br><span class="line">    <span class="keyword">return</span> accumulate(<span class="keyword">lambda</span> a,b:a - b,<span class="number">0</span>,args)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multiply</span>(<span class="params">*args</span>):</span></span><br><span class="line">    <span class="keyword">return</span> accumulate(<span class="keyword">lambda</span> a,b:a * b,<span class="number">1</span>,args)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">divide</span>(<span class="params">*args</span>):</span></span><br><span class="line">    <span class="keyword">return</span> accumulate(<span class="keyword">lambda</span> a,b:a / b,<span class="number">1</span>,args)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">to_list</span>(<span class="params">*args</span>):</span></span><br><span class="line">    <span class="keyword">return</span> accumulate(<span class="keyword">lambda</span> a,b:a + [b],[],args)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cons</span>(<span class="params">first,second</span>):</span></span><br><span class="line">    <span class="keyword">return</span> [first] + [second]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">car</span>(<span class="params">pair</span>):</span></span><br><span class="line">    <span class="keyword">return</span> pair[<span class="number">0</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cdr</span>(<span class="params">pair</span>):</span></span><br><span class="line">    <span class="keyword">if</span> len(pair) == <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> pair[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> pair[<span class="number">1</span>:]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">null</span>(<span class="params">seq</span>):</span></span><br><span class="line">    <span class="keyword">return</span> seq == []</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="在-Evaluator-里设置默认操作符"><a href="#在-Evaluator-里设置默认操作符" class="headerlink" title="在 Evaluator 里设置默认操作符"></a>在 Evaluator 里设置默认操作符</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Evaluator</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._exp_parser = ExpressionParser()</span><br><span class="line">        self._init_primitives()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eval</span>(<span class="params">self,exp,env</span>):</span></span><br><span class="line">        <span class="keyword">if</span> exp == []: <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> isinstance(exp,Expression) == <span class="literal">False</span>:</span><br><span class="line">            exp = self._exp_parser.parse(exp)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> isinstance(exp,Expression) == <span class="literal">False</span>:</span><br><span class="line">            <span class="keyword">if</span> len(exp) == <span class="number">1</span>:</span><br><span class="line">                exp = VariableExpression(exp)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                args = list(map(<span class="keyword">lambda</span> arg: self.eval(arg,env),exp[<span class="number">1</span>:]))</span><br><span class="line">                proc = env.get_variable(exp[<span class="number">0</span>])</span><br><span class="line">                <span class="keyword">if</span> proc == <span class="literal">None</span>:</span><br><span class="line">                    proc = self._primitives[exp[<span class="number">0</span>]]</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> isinstance(proc,ProcedureExpression):</span><br><span class="line">                    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(proc.args)):</span><br><span class="line">                        proc.env.define_variable(proc.args[i],args[i])</span><br><span class="line">                <span class="keyword">return</span> self.apply(proc,args)</span><br><span class="line">        <span class="keyword">return</span> exp.eval(self,env)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">apply</span>(<span class="params">self,proc,args</span>):</span></span><br><span class="line">        <span class="keyword">if</span> proc <span class="keyword">in</span> self._primitives.values():</span><br><span class="line">            <span class="keyword">return</span> proc(*args)</span><br><span class="line">        <span class="keyword">return</span> self.eval(proc.proc,proc.env)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_init_primitives</span>(<span class="params">self</span>):</span></span><br><span class="line">        self._primitives = &#123;</span><br><span class="line">            <span class="string">&quot;+&quot;</span>: add,</span><br><span class="line">            <span class="string">&quot;-&quot;</span>: subtract,</span><br><span class="line">            <span class="string">&quot;*&quot;</span>: multiply,</span><br><span class="line">            <span class="string">&quot;/&quot;</span>: divide,</span><br><span class="line">            <span class="string">&quot;list&quot;</span>: to_list,</span><br><span class="line">            <span class="string">&quot;cons&quot;</span>: cons,</span><br><span class="line">            <span class="string">&quot;car&quot;</span>: car,</span><br><span class="line">            <span class="string">&quot;cdr&quot;</span>: cdr,</span><br><span class="line">            <span class="string">&quot;null?&quot;</span>: null</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" title="编译原理">编译原理</a>
+            
+        </div>
+        
+    </article>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2017/12/07/lisp%E8%A7%A3%E9%87%8A%E5%99%A8%E5%AE%9E%E7%8E%B0-7/">
+                <i class="iconfont icon-prev"></i>
+                <span class="nav-default">Lisp解释器的实现--表达式的实现(7)</span>
+                <span class="nav-mobile">上一篇</span>
+            </a>
+        
+        
+            <a class="next" href="/2017/12/05/lisp%E8%A7%A3%E9%87%8A%E5%99%A8%E5%AE%9E%E7%8E%B0-5/">
+                <span class="nav-default">Lisp解释器的实现--解释器基本结构的实现(5)</span>
+                <span class="nav-mobile">下一篇</span>
+                <i class="iconfont icon-next"></i>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/iJinxin">mnikn</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/iJinxin/hexo-theme-sky">Sky</a>
+        </p>
+    </div>
+</footer>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

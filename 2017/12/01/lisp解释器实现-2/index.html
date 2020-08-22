@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>Hexo</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_859455_eaq7v6w8ktj.css">
+<meta name="generator" content="Hexo 5.1.0"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                首页
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                归档
+            </a>
+            
+
+            
+            <a href="/tags" class="header-nav-link">
+                标签
+            </a>
+            
+
+            
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="mobile-nav-title">
+            <a href="/" class="mobile-nav-title-link">mnikn's Blog</a>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">首页</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">归档</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-tag"></i>
+                <a href="/tags" class="mobile-nav-link">标签</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-about"></i>
+                <a href="/about/" class="mobile-nav-link">关于</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="posts">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">Lisp解释器的实现--表达式字符串的格式化(2)</h2>
+            <div class="post-meta">
+                <span class="post-time">2017-12-01</span>
+                
+                <span class="post-category">
+                    
+                    <a class="category" href="/categories/lisp%E8%A7%A3%E9%87%8A%E5%99%A8%E5%AE%9E%E7%8E%B0/">lisp解释器实现</a>
+                    
+                </span>
+                
+                <span class="post-visit"> 阅读次数：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A6%81%E5%BE%97%E5%88%B0%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="toc-text">要得到的格式</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">回到顶部</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>本文我们实现表达式字符串的格式化。</p>
+<a id="more"></a>
+
+<h2 id="要得到的格式"><a href="#要得到的格式" class="headerlink" title="要得到的格式"></a>要得到的格式</h2><p>设想一下我们要输入的表达式字符串是：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">*</span></span> <span class="number">2</span> (<span class="name"><span class="builtin-name">+</span></span> <span class="number">3</span> <span class="number">4</span> (<span class="name"><span class="builtin-name">-</span></span> <span class="number">1</span> <span class="number">2</span>)) <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>而我们的目标格式是一个 <code>list</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[* <span class="number">2</span> [+ <span class="number">3</span> [<span class="number">1</span> <span class="number">2</span>]] <span class="number">5</span>] </span><br></pre></td></tr></table></figure>
+
+<p>以下是解析代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExpressionFormattor</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">format</span>(<span class="params">self,exp</span>):</span></span><br><span class="line">        <span class="keyword">if</span> exp.isdigit() <span class="keyword">or</span> (exp.find(<span class="string">&quot;&#x27;&quot;</span>) != <span class="number">-1</span> <span class="keyword">or</span> exp.find(<span class="string">&#x27;&quot;&#x27;</span>) != <span class="number">-1</span>) <span class="keyword">or</span> (exp.find(<span class="string">&quot;(&quot;</span>) == <span class="number">-1</span> <span class="keyword">and</span> exp.find(<span class="string">&quot;)&quot;</span>) == <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">return</span> exp</span><br><span class="line">        exp = exp.replace(<span class="string">&quot;\n&quot;</span>,<span class="string">&quot; &quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> self._convert_to_list(exp)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_convert_to_list</span>(<span class="params">self,exp</span>):</span></span><br><span class="line">        <span class="keyword">if</span> exp.find(<span class="string">&quot;(&quot;</span>) == <span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">return</span> exp != <span class="string">&quot;&quot;</span> <span class="keyword">and</span> [exp] <span class="keyword">or</span> []</span><br><span class="line">        exp_list = []</span><br><span class="line">        word = <span class="string">&quot;&quot;</span></span><br><span class="line">        i = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; len(exp)<span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">if</span> exp[i].isspace():</span><br><span class="line">                <span class="keyword">if</span> word != <span class="string">&quot;&quot;</span>:</span><br><span class="line">                    exp_list.append(word)</span><br><span class="line">                    word = <span class="string">&quot;&quot;</span></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> exp[i] == <span class="string">&quot;&#x27;&quot;</span>:</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> exp[i] == <span class="string">&quot;(&quot;</span>:</span><br><span class="line">                right_par_index = self._find_right_parenthesis(exp,i)</span><br><span class="line">                exp_list.append(self._convert_to_list(exp[i:right_par_index+<span class="number">1</span>]))</span><br><span class="line">                i = right_par_index + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                word += exp[i]</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> word != <span class="string">&quot;&quot;</span>:</span><br><span class="line">            exp_list.append(word)</span><br><span class="line">        <span class="keyword">return</span> exp_list</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_find_right_parenthesis</span>(<span class="params">self,exp,left_index</span>):</span></span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(left_index,len(exp) - <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> exp[i] == <span class="string">&quot;(&quot;</span>:</span><br><span class="line">                count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> exp[i] == <span class="string">&quot;)&quot;</span>:</span><br><span class="line">                count -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> count == <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">return</span> i</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" title="编译原理">编译原理</a>
+            
+        </div>
+        
+    </article>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2017/12/02/lisp%E8%A7%A3%E9%87%8A%E5%99%A8%E5%AE%9E%E7%8E%B0-3/">
+                <i class="iconfont icon-prev"></i>
+                <span class="nav-default">Lisp解释器的实现--格式表达式的转化(3)</span>
+                <span class="nav-mobile">上一篇</span>
+            </a>
+        
+        
+            <a class="next" href="/2017/11/30/lisp%E8%A7%A3%E9%87%8A%E5%99%A8%E5%AE%9E%E7%8E%B0-1/">
+                <span class="nav-default">Lisp解释器的实现--简介(1)</span>
+                <span class="nav-mobile">下一篇</span>
+                <i class="iconfont icon-next"></i>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/iJinxin">mnikn</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/iJinxin/hexo-theme-sky">Sky</a>
+        </p>
+    </div>
+</footer>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>
