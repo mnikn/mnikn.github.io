@@ -1,28 +1,58 @@
+import { useApp } from '@/contexts/app-context'
+import ReactMarkdown from 'react-markdown'
 import { useParams } from 'react-router-dom'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import remarkGfm from 'remark-gfm'
 
-export default function PostDetail() {
+export function PostDetail() {
   const { id } = useParams()
+  const { getPostById } = useApp()
+  const post = getPostById(id || '')
+
+  if (!post) {
+    return <div className="container py-8">文章不存在</div>
+  }
 
   return (
     <div className="container py-8">
       <article className="prose dark:prose-invert lg:prose-lg mx-auto">
-        <h1>文章标题</h1>
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <time>2024-03-21</time>
-          <div>阅读时间：5分钟</div>
+        <h1>{post.title}</h1>
+        <div className="text-sm text-muted-foreground">
+          <time>{post.date}</time>
         </div>
-        <div className="flex gap-2 my-4">
-          {['React', 'TypeScript'].map(tag => (
-            <span
-              key={tag}
-              className="px-2 py-1 text-xs rounded-md bg-secondary text-secondary-foreground"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-        <p>这里是文章内容...</p>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            code({
+              inline,
+              className,
+              children,
+              ...props
+            }: {
+              inline: boolean
+              className: string
+              children: React.ReactNode
+              [key: string]: any
+            }) {
+              const match = /language-(\w+)/.exec(className || '')
+              return !inline && match ? (
+                <SyntaxHighlighter {...props} style={oneDark} language={match[1]} PreTag="div">
+                  {String(children).replace(/\n$/, '')}
+                </SyntaxHighlighter>
+              ) : (
+                <code {...props} className={className}>
+                  {children}
+                </code>
+              )
+            },
+          }}
+        >
+          {post.content}
+        </ReactMarkdown>
       </article>
     </div>
   )
 }
+
+export default PostDetail

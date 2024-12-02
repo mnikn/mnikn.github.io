@@ -4,6 +4,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
+import { menuItems } from '@/constants/menu'
 import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 
@@ -18,26 +19,13 @@ export function Header() {
                 Mnikn's World
               </Link>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link to="/posts" className={cn(navigationMenuTriggerStyle(), 'text-sm')}>
-                文章
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link to="/posts" className={cn(navigationMenuTriggerStyle(), 'text-sm')}>
-                游戏
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link to="/posts" className={cn(navigationMenuTriggerStyle(), 'text-sm')}>
-                画廊
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link to="/about" className={cn(navigationMenuTriggerStyle(), 'text-sm')}>
-                关于我
-              </Link>
-            </NavigationMenuItem>
+            {menuItems.map(item => (
+              <NavigationMenuItem key={item.key}>
+                <Link to={item.path} className={cn(navigationMenuTriggerStyle(), 'text-sm')}>
+                  {item.label}
+                </Link>
+              </NavigationMenuItem>
+            ))}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
