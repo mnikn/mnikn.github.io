@@ -29,6 +29,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             description: content.attributes.description || '',
             content: content.content,
             date: content.attributes.date || '',
+            tags: content.attributes.tags || [],
           }
         })
       )

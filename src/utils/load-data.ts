@@ -1,8 +1,11 @@
+import dayjs from 'dayjs'
+
 interface MarkdownContent {
   content: string
   attributes: {
     title?: string
     date?: string
+    tags?: string[]
     [key: string]: any
   }
 }
@@ -18,7 +21,6 @@ export const loadMarkdownFiles = async () => {
     const fileName = path.split('/').pop()?.replace('.md', '')
     promises.push(
       (content as any)().then((fileContent: any) => {
-        console.log(fileContent)
         if (!fileContent?.attributes?.title) {
           fileContent.attributes.title = fileName || fileContent?.toc[0]?.content || 'Untitled'
         }
@@ -43,5 +45,9 @@ export const loadMarkdownFiles = async () => {
     )
   })
 
-  return await Promise.all(promises)
+  const data = await Promise.all(promises)
+  data.sort((a, b) => {
+    return dayjs(b.content.attributes.date).isAfter(dayjs(a.content.attributes.date)) ? 1 : -1
+  })
+  return data
 }

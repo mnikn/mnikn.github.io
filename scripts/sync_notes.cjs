@@ -20,58 +20,60 @@ if (!fs.existsSync(targetDir)) {
 }
 
 // 复制文件函数
-function copyFiles(source, target) {
-  // 读取源目录
-  const files = fs.readdirSync(source)
+function copyFiles(source) {
+  const stat = fs.statSync(source)
+  if (stat.isFile() && source.endsWith('.md')) {
+    const fileContent = fs.readFileSync(source, 'utf8')
+    const { data, content } = matter(fileContent)
+    // 只复制 markdown 文件
+    if (data.publish === '1') {
+      // 获取文件最后修改时间
+      const stats = fs.statSync(source)
+      const date = stats.birthtime.toISOString()
 
-  files.forEach(file => {
-    const sourcePath = path.join(source, file)
-    const targetPath = path.join(target, file)
+      const pathArray = path
+        .dirname(source)
+        .replace(sourceDir, '')
+        .split(path.sep)
+        .filter(segment => segment.length > 0)
+      // 更新 frontmatter
+      const updatedContent = matter.stringify(content, {
+        ...data,
+        date,
+        tags: pathArray,
+      })
 
-    const stat = fs.statSync(sourcePath)
-
-    if (stat.isDirectory()) {
-      // 忽略 .trash 目录
-      if (['.trash', '.obsidian'].includes(file)) {
-        return
+      // 写入新文件
+      const targetPath = path.join(targetDir, source.replace(sourceDir, ''))
+      const targetDirPath = path.dirname(targetPath)
+      if (!fs.existsSync(targetDirPath)) {
+        fs.mkdirSync(targetDirPath, { recursive: true })
       }
-
-      // 如果是目录则递归复制
-      const subFiles = fs.readdirSync(sourcePath)
-      let hasPublishedFiles = false
-
-      // 检查子目录中是否有需要发布的文件
-      for (const subFile of subFiles) {
-        const subSourcePath = path.join(sourcePath, subFile)
-        const subStat = fs.statSync(subSourcePath)
-
-        if (subStat.isFile() && subFile.endsWith('.md')) {
-          const fileContent = fs.readFileSync(subSourcePath, 'utf8')
-          const { data } = matter(fileContent)
-          if (data.publish === '1') {
-            hasPublishedFiles = true
-            break
-          }
-        }
-      }
-
-      // 只有当目录包含需要发布的文件时才创建目录
-      if (hasPublishedFiles) {
-        if (!fs.existsSync(targetPath)) {
-          fs.mkdirSync(targetPath, { recursive: true })
-        }
-        copyFiles(sourcePath, targetPath)
-      }
-    } else if (file.endsWith('.md')) {
-      const fileContent = fs.readFileSync(sourcePath, 'utf8')
-      const { data } = matter(fileContent)
-      // 只复制 markdown 文件
-      if (data.publish === '1') {
-        fs.copyFileSync(sourcePath, targetPath)
-        console.log(`已复制: ${file}`)
-      }
+      fs.writeFileSync(targetPath, updatedContent)
+      console.log(`已复制: ${source}`)
     }
-  })
+
+    // const fileContent = fs.readFileSync(sourcePath, 'utf8')
+    // const { data } = matter(fileContent)
+    // // 只复制 markdown 文件
+    // if (data.publish === '1') {
+    //   fs.copyFileSync(sourcePath, targetPath)
+    //   console.log(`已复制: ${file}`)
+    // }
+    return
+  } else if (stat.isDirectory()) {
+    // 忽略 .trash 目录
+    if (['.trash', '.obsidian'].includes(source)) {
+      return
+    }
+
+    const subFiles = fs.readdirSync(source)
+    subFiles.forEach(file => {
+      const subSourcePath = path.join(source, file)
+      copyFiles(subSourcePath)
+    })
+    return
+  }
 }
 
 try {
