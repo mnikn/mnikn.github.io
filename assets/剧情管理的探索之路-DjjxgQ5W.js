@@ -1,4 +1,4 @@
-const n={publish:"1"},e=`<p>因为我一直想做个 rpg 游戏，而对于做 rpg 来说，科学地管理游戏剧情是不可或缺的，所以我对于这方面做了一些探索。</p>
+const n={publish:"1",date:"2024-04-24T07:45:11.000Z",tags:["创作笔记"]},e=`<p>因为我一直想做个 rpg 游戏，而对于做 rpg 来说，科学地管理游戏剧情是不可或缺的，所以我对于这方面做了一些探索。</p>
 <h3>初期探索阶段</h3>
 <p>计算机领域有句话叫不要重复造轮子，意思就是与其自己从零开始探索制作，不如借助已有的东西。我作为一个懒惰的人也深谙此道，所以一开始我就探索了各式各类的剧情管理软件，最后发现主要是这几个比较能够用于实战：</p>
 <ul>
@@ -233,5 +233,6 @@ windows 版：[https://github.com/mnikn/shovel-db/releases/tag/0.1.0](https://gi
 
 参考资料：
 - [分支剧情创作中的挑战和工具](https://indienova.com/indie-game-development/tools-for-branching-dialogs-and-narrative/)
-- [消失的箭头：一种创作（无）分支剧情的新思路](https://indienova.com/indie-game-development/the-disappearing-arrow-new-way-of-creating-no-branching-plots/)`,t=[{level:"3",content:"&#x521D;&#x671F;&#x63A2;&#x7D22;&#x9636;&#x6BB5;"},{level:"3",content:"&#x7B2C;&#x4E00;&#x6B21;&#x5C1D;&#x8BD5;"},{level:"3",content:"&#x4E0D;&#x723D;"},{level:"3",content:"&#x65B0;&#x7684;&#x6784;&#x601D;"},{level:"3",content:"&#x91CD;&#x6784;&#xFF01;"},{level:"3",content:"&#x6210;&#x54C1;"},{level:"4",content:"&#x6545;&#x4E8B;&#x4F8B;&#x5B50;1"},{level:"3",content:"&#x6545;&#x4E8B;&#x4F8B;&#x5B50;2"},{level:"3",content:"&#x590D;&#x6742;&#x4F46;&#x5B9E;&#x9645;&#x7684;&#x6545;&#x4E8B;&#x4F8B;&#x5B50;"},{level:"4",content:"&#x52A8;&#x6001;&#x4FEE;&#x6539;&#x8282;&#x70B9;&#x8868;&#x5355;"},{level:"4",content:"&#x9759;&#x6001;&#x6570;&#x636E;&#x7BA1;&#x7406;"},{level:"4",content:"&#x793A;&#x4F8B;&#x89C6;&#x9891;"},{level:"3",content:"&#x5C0F;&#x7ED3;"}];export{n as attributes,e as html,p as markdown,t as toc};
-//# sourceMappingURL=剧情管理的探索之路-Dj8d4Lh-.js.map
+- [消失的箭头：一种创作（无）分支剧情的新思路](https://indienova.com/indie-game-development/the-disappearing-arrow-new-way-of-creating-no-branching-plots/)
+`,t=[{level:"3",content:"&#x521D;&#x671F;&#x63A2;&#x7D22;&#x9636;&#x6BB5;"},{level:"3",content:"&#x7B2C;&#x4E00;&#x6B21;&#x5C1D;&#x8BD5;"},{level:"3",content:"&#x4E0D;&#x723D;"},{level:"3",content:"&#x65B0;&#x7684;&#x6784;&#x601D;"},{level:"3",content:"&#x91CD;&#x6784;&#xFF01;"},{level:"3",content:"&#x6210;&#x54C1;"},{level:"4",content:"&#x6545;&#x4E8B;&#x4F8B;&#x5B50;1"},{level:"3",content:"&#x6545;&#x4E8B;&#x4F8B;&#x5B50;2"},{level:"3",content:"&#x590D;&#x6742;&#x4F46;&#x5B9E;&#x9645;&#x7684;&#x6545;&#x4E8B;&#x4F8B;&#x5B50;"},{level:"4",content:"&#x52A8;&#x6001;&#x4FEE;&#x6539;&#x8282;&#x70B9;&#x8868;&#x5355;"},{level:"4",content:"&#x9759;&#x6001;&#x6570;&#x636E;&#x7BA1;&#x7406;"},{level:"4",content:"&#x793A;&#x4F8B;&#x89C6;&#x9891;"},{level:"3",content:"&#x5C0F;&#x7ED3;"}];export{n as attributes,e as html,p as markdown,t as toc};
+//# sourceMappingURL=剧情管理的探索之路-DjjxgQ5W.js.map

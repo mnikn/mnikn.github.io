@@ -1,4 +1,4 @@
-const t={publish:"1"},e=`<p>我看了很多次 autotile 和 tileset 相关的视频了，看视频时能理解，但是到了自己真正要做 autotile 要用的 tileset 时基本上不知道怎么做，想来想去原因应该是 tileset 的 tile 比较多，做起来不知道 autotile 时怎么对应，所以我把每一个 tile 的制作的对应方式都记录下来。</p>
+const t={publish:"1",date:"2024-04-24T07:45:10.000Z",tags:["开发笔记"]},e=`<p>我看了很多次 autotile 和 tileset 相关的视频了，看视频时能理解，但是到了自己真正要做 autotile 要用的 tileset 时基本上不知道怎么做，想来想去原因应该是 tileset 的 tile 比较多，做起来不知道 autotile 时怎么对应，所以我把每一个 tile 的制作的对应方式都记录下来。</p>
 <p>tileset 的形式我是参考 <a href="https://www.youtube.com/watch?v=MsXB2mK23Ng&amp;t=809s"># Godot 4 Tutorial - Heart Platformer P7 - Autotile + Sloped Tiles</a>，可以作为参考对比。</p>
 <h3>autotile 的规则</h3>
 <p>在做 autotile 用的 tileset 时，先简单讲下 autotile 的规则，由于我用 godot，这里就以 godot4 的 autotile 设置方式为例， godot4 中 autotile 的规则有 Match Corners and Sides、Match Corners、Match Sides 三种，Match Corners、Match Sides 实际上都是简化版本，例子中是以 Match Corners and Sides 为例。</p>
@@ -189,5 +189,6 @@ tileset 的形式我是参考 [# Godot 4 Tutorial - Heart Platformer P7 - Autoti
 
 至此一个 autotile 用的 tileset 基本上完成了，在制作的过程中一定会发现有很多重复的地方，实际上我记得有工具只要给出几个基础 tile 就能生成完整的 tileset，不过我忘记那个工具叫什么名字了（有认识的朋友可以说下），记得主要是要收费所以我还是自己搞算了。
 
-上述做出来的文件在：[https://mnikn.itch.io/autotile-template](https://mnikn.itch.io/autotile-template)`,i=[{level:"3",content:"autotile &#x7684;&#x89C4;&#x5219;"},{level:"3",content:"&#x5F00;&#x59CB;&#x505A; titleset"},{level:"3",content:"&#x57FA;&#x7840; tile"},{level:"3",content:"&#x8854;&#x63A5;&#x7528; tile"},{level:"3",content:"&#x5C0F;&#x7ED3;"}];export{t as attributes,e as html,n as markdown,i as toc};
-//# sourceMappingURL=用笨方法学做 autotile 用的 tileset-DjVI_Szt.js.map
+上述做出来的文件在：[https://mnikn.itch.io/autotile-template](https://mnikn.itch.io/autotile-template)
+`,i=[{level:"3",content:"autotile &#x7684;&#x89C4;&#x5219;"},{level:"3",content:"&#x5F00;&#x59CB;&#x505A; titleset"},{level:"3",content:"&#x57FA;&#x7840; tile"},{level:"3",content:"&#x8854;&#x63A5;&#x7528; tile"},{level:"3",content:"&#x5C0F;&#x7ED3;"}];export{t as attributes,e as html,n as markdown,i as toc};
+//# sourceMappingURL=用笨方法学做 autotile 用的 tileset-DHWhgO8l.js.map
