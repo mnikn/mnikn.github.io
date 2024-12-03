@@ -20,13 +20,16 @@ export const loadMarkdownFiles = async () => {
       (content as any)().then((fileContent: any) => {
         console.log(fileContent)
         if (!fileContent?.attributes?.title) {
-          fileContent.attributes.title = fileContent?.toc[0]?.content || 'Untitled'
+          fileContent.attributes.title = fileName || fileContent?.toc[0]?.content || 'Untitled'
         }
-        if (!fileContent?.attributes?.date) {
-          fileContent.attributes.date = new Date().toISOString()
-        }
+        // if (!fileContent?.attributes?.date) {
+        //   fileContent.attributes.date = new Date().toString()
+        // }
         if (!fileContent?.attributes?.description) {
-          fileContent.attributes.description = fileContent?.html
+          fileContent.attributes.description =
+            fileContent?.markdown.length > 1000
+              ? fileContent?.markdown.substring(0, 1000) + '...'
+              : fileContent?.markdown
         }
 
         return {

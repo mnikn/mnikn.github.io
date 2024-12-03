@@ -11,7 +11,8 @@
     "format": "eslint src --ext ts,tsx --fix && prettier --write src/**/*.{ts,tsx}",
     "preview": "vite preview",
     "prepare": "husky install",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "sync-notes": "node scripts/sync_notes.cjs"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
@@ -28,8 +29,9 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "gray-matter": "^4.0.3",
+    "glob": "^8.1.0",
     "lucide-react": "^0.462.0",
+    "marked": "^4.2.12",
     "next-mdx-remote": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -39,8 +41,6 @@
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "glob": "^8.1.0",
-    "marked": "^4.2.12",
     "vite-plugin-markdown": "^2.1.0"
   },
   "devDependencies": {
@@ -60,6 +60,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "eslint-plugin-unused-imports": "^3.1.0",
+    "gray-matter": "^4.0.3",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "postcss": "^8.4.35",

@@ -23,7 +23,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const data = await loadMarkdownFiles()
       setPosts(
         data.map(({ fileName, content }) => {
-          console.log(content)
           return {
             id: fileName,
             title: content.attributes.title || '',

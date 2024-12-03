@@ -17,11 +17,11 @@ export function PostDetail() {
 
   return (
     <div className="container py-8">
-      <article className="prose dark:prose-invert lg:prose-lg mx-auto">
-        {/* <h1>{post.title}</h1>
+      <article className="prose dark:prose-invert mx-auto text-foreground">
+        <h1>{post.title}</h1>
         <div className="text-sm text-muted-foreground">
           <time>{post.date}</time>
-        </div> */}
+        </div>
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{

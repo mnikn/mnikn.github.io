@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -6,16 +8,15 @@ import {
 } from '@/components/ui/navigation-menu'
 import { menuItems } from '@/constants/menu'
 import { cn } from '@/lib/utils'
-import { Link } from 'react-router-dom'
 
 export function Header() {
   return (
     <header className="border-b">
       <div className="container flex h-16 items-center">
         <NavigationMenu>
-          <NavigationMenuList>
+          <NavigationMenuList className="overflow-auto">
             <NavigationMenuItem>
-              <Link to="/" className="text-lg font-bold mr-4">
+              <Link to="/" className="text-lg font-bold mr-4 text-center flex items-center">
                 Mnikn's World
               </Link>
             </NavigationMenuItem>

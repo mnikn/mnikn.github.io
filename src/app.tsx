@@ -1,15 +1,16 @@
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+
 import { Header } from '@/components/layout/header'
 import { AppProvider } from '@/contexts/app-context'
 import About from '@/pages/about'
 import PostDetail from '@/pages/post-detail'
 import Posts from '@/pages/posts'
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 
 function App() {
   return (
     <AppProvider>
       <Router>
-        <div className="min-h-screen bg-background text-foreground">
+        <div className="min-h-screen bg-background text-foreground overflow-auto">
           <Header />
           <main>
             <Routes>
