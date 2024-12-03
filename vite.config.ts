@@ -1,16 +1,27 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 import path from 'path'
 
-// https://vitejs.dev/config/
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import markdown, { Mode } from 'vite-plugin-markdown'
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    (markdown as any).plugin({
+      mode: [Mode.HTML, Mode.TOC, Mode.MARKDOWN],
+      markdownIt: {
+        html: true,
+        linkify: true,
+        typographer: true,
+      },
+    }),
+  ],
   css: {
     postcss: './postcss.config.js',
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   server: {
@@ -30,4 +41,4 @@ export default defineConfig({
       },
     },
   },
-}) 
+})

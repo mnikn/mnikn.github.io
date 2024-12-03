@@ -1,5 +1,7 @@
+import { createContext, useContext, useEffect, useState } from 'react'
+
 import { Post } from '@/types/post'
-import { createContext, useContext, useState } from 'react'
+import { loadMarkdownFiles } from '@/utils/load-data'
 
 interface AppContextType {
   posts: Post[]
@@ -10,36 +12,30 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [posts, setPosts] = useState<Post[]>([
-    {
-      id: '1',
-      title: '示例文章',
-      content: `
-# 标题1
-
-这是一篇示例文章的内容...
-
-## 标题2
-
-- 列表项1
-- 列表项2
-- 列表项3
-
-### 代码示例
-
-\`\`\`typescript
-function hello() {
-  console.log('Hello, World!')
-}
-\`\`\`
-    `,
-      date: '2024-03-21',
-    },
-  ])
+  const [posts, setPosts] = useState<Post[]>([])
 
   const getPostById = (id: string) => {
     return posts.find(post => post.id === id)
   }
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      const data = await loadMarkdownFiles()
+      setPosts(
+        data.map(({ fileName, content }) => {
+          console.log(content)
+          return {
+            id: fileName,
+            title: content.attributes.title || '',
+            description: content.attributes.description || '',
+            content: content.content,
+            date: content.attributes.date || '',
+          }
+        })
+      )
+    }
+    loadPosts()
+  }, [])
 
   return (
     <AppContext.Provider

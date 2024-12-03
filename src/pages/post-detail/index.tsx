@@ -1,9 +1,10 @@
-import { useApp } from '@/contexts/app-context'
 import ReactMarkdown from 'react-markdown'
 import { useParams } from 'react-router-dom'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkGfm from 'remark-gfm'
+
+import { useApp } from '@/contexts/app-context'
 
 export function PostDetail() {
   const { id } = useParams()
@@ -17,10 +18,10 @@ export function PostDetail() {
   return (
     <div className="container py-8">
       <article className="prose dark:prose-invert lg:prose-lg mx-auto">
-        <h1>{post.title}</h1>
+        {/* <h1>{post.title}</h1>
         <div className="text-sm text-muted-foreground">
           <time>{post.date}</time>
-        </div>
+        </div> */}
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{

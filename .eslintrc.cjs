@@ -74,5 +74,6 @@ module.exports = {
     ],
     'import/newline-after-import': 'error',
     'import/no-duplicates': 'error',
+    'react-refresh/only-export-components': 'off',
   },
 }

@@ -1,5 +1,6 @@
-import { useApp } from '@/contexts/app-context'
 import { Link } from 'react-router-dom'
+
+import { useApp } from '@/contexts/app-context'
 
 export default function Posts() {
   const { posts } = useApp()
@@ -12,8 +13,20 @@ export default function Posts() {
             <Link to={`/posts/${post.id}`}>
               <h2 className="text-2xl font-bold hover:text-primary">{post.title}</h2>
             </Link>
-            <p className="text-muted-foreground line-clamp-2">
-              {post.content.length > 1000 ? post.content.substring(0, 1000) + '...' : post.content}
+            <div className="text-sm text-muted-foreground">
+              <time>{post.date}</time>
+            </div>
+            <p className="line-clamp-2">
+              {post.description ? (
+                <div
+                  className="inline-flex"
+                  dangerouslySetInnerHTML={{ __html: post.description }}
+                />
+              ) : post.content.length > 1000 ? (
+                post.content.substring(0, 1000) + '...'
+              ) : (
+                post.content
+              )}
             </p>
           </article>
         ))}
