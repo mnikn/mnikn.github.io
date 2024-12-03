@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function About() {
   return (
     <div className="container py-8">
@@ -11,4 +9,4 @@ export default function About() {
       </div>
     </div>
   )
-} 
+}

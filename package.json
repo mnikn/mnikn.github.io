@@ -14,7 +14,7 @@
     "precommit": "lint-staged",
     "sync-notes": "node scripts/sync_notes.cjs",
     "predeploy": "npm run sync-notes && npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "npm run predeploy && gh-pages -d dist"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
@@ -26,6 +26,7 @@
     ]
   },
   "dependencies": {
+    "@radix-ui/react-dropdown-menu": "^2.1.2",
     "@radix-ui/react-navigation-menu": "^1.2.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@types/react-syntax-highlighter": "^15.5.13",

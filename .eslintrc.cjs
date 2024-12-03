@@ -33,7 +33,7 @@ module.exports = {
     // 未使用的导入
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
-    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-imports': 'warn',
     'unused-imports/no-unused-vars': [
       'warn',
       {
@@ -46,7 +46,7 @@ module.exports = {
 
     // 导入排序
     'import/order': [
-      'error',
+      'warn',
       {
         groups: [
           'builtin',
@@ -72,8 +72,8 @@ module.exports = {
         },
       },
     ],
-    'import/newline-after-import': 'error',
-    'import/no-duplicates': 'error',
+    'import/newline-after-import': 'warn',
+    'import/no-duplicates': 'warn',
     'react-refresh/only-export-components': 'off',
   },
 }

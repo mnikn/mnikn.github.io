@@ -7,7 +7,7 @@ import markdown, { Mode } from 'vite-plugin-markdown'
 export default defineConfig({
   plugins: [
     react(),
-    (markdown as any).plugin({
+    markdown({
       mode: [Mode.HTML, Mode.TOC, Mode.MARKDOWN],
       markdownIt: {
         html: true,

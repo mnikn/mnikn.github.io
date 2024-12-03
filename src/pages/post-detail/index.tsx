@@ -25,20 +25,16 @@ export function PostDetail() {
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            code({
-              inline,
-              className,
-              children,
-              ...props
-            }: {
-              inline: boolean
-              className: string
-              children: React.ReactNode
-              [key: string]: any
-            }) {
+            code({ className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '')
-              return !inline && match ? (
-                <SyntaxHighlighter {...props} style={oneDark} language={match[1]} PreTag="div">
+              return match ? (
+                <SyntaxHighlighter
+                  {...props}
+                  ref={null}
+                  style={oneDark}
+                  language={match[1]}
+                  PreTag="div"
+                >
                   {String(children).replace(/\n$/, '')}
                 </SyntaxHighlighter>
               ) : (

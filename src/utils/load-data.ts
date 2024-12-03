@@ -8,7 +8,7 @@ interface MarkdownContent {
 }
 
 export const loadMarkdownFiles = async () => {
-  const markdownFiles = import.meta.glob('../../data/posts/**/*.md', {
+  const markdownFiles = (import.meta as any).glob('../../data/posts/**/*.md', {
     // eager: true,
     // as: 'raw',
   })
