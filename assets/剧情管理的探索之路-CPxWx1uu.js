@@ -73,7 +73,7 @@ const n={publish:"1",date:"2024-04-24T07:45:11.000Z",tags:["创作笔记"]},e=`<
 <p><img src="https://github.com/mnikn/picx-images-hosting/raw/master/shove-db-14.2obkjpj3lh.webp" alt="shove-db-14"></p>
 <h4>示例视频</h4>
 <p>下面就展示我实际场景中是怎么编辑故事的：</p>
-<video src="https://github.com/mnikn/picx-images-hosting/raw/refs/heads/master/shove-db-video.mp4" />
+<video controls src="https://github.com/mnikn/picx-images-hosting/raw/refs/heads/master/shove-db-video.mp4" />
 <h3>小结</h3>
 <p>目前这个软件我用了一段时间感觉还不错，基本上符合我的需求，虽然理论上是可以做成公用，不过我可没精力去维护和管理别人的各式各类需求，所以我是会开放源码和一些简易的使用文档，不过具体的教程和要求我就懒得搞了，有兴趣的人更倾向于自己 fork 一份自己改成想要的样子。</p>
 <p>源码：<a href="https://github.com/mnikn/shovel-db">https://github.com/mnikn/shovel-db</a>
@@ -223,7 +223,7 @@ windows 版：<a href="https://github.com/mnikn/shovel-db/releases/tag/0.1.0">ht
 
 下面就展示我实际场景中是怎么编辑故事的：
 
-<video src="https://github.com/mnikn/picx-images-hosting/raw/refs/heads/master/shove-db-video.mp4" />
+<video controls src="https://github.com/mnikn/picx-images-hosting/raw/refs/heads/master/shove-db-video.mp4" />
 
 
 
@@ -238,4 +238,4 @@ windows 版：[https://github.com/mnikn/shovel-db/releases/tag/0.1.0](https://gi
 - [分支剧情创作中的挑战和工具](https://indienova.com/indie-game-development/tools-for-branching-dialogs-and-narrative/)
 - [消失的箭头：一种创作（无）分支剧情的新思路](https://indienova.com/indie-game-development/the-disappearing-arrow-new-way-of-creating-no-branching-plots/)
 `,i=[{level:"3",content:"&#x521D;&#x671F;&#x63A2;&#x7D22;&#x9636;&#x6BB5;"},{level:"3",content:"&#x7B2C;&#x4E00;&#x6B21;&#x5C1D;&#x8BD5;"},{level:"3",content:"&#x4E0D;&#x723D;"},{level:"3",content:"&#x65B0;&#x7684;&#x6784;&#x601D;"},{level:"3",content:"&#x91CD;&#x6784;&#xFF01;"},{level:"3",content:"&#x6210;&#x54C1;"},{level:"4",content:"&#x6545;&#x4E8B;&#x4F8B;&#x5B50;1"},{level:"3",content:"&#x6545;&#x4E8B;&#x4F8B;&#x5B50;2"},{level:"3",content:"&#x590D;&#x6742;&#x4F46;&#x5B9E;&#x9645;&#x7684;&#x6545;&#x4E8B;&#x4F8B;&#x5B50;"},{level:"4",content:"&#x52A8;&#x6001;&#x4FEE;&#x6539;&#x8282;&#x70B9;&#x8868;&#x5355;"},{level:"4",content:"&#x9759;&#x6001;&#x6570;&#x636E;&#x7BA1;&#x7406;"},{level:"4",content:"&#x793A;&#x4F8B;&#x89C6;&#x9891;"}];export{n as attributes,e as html,t as markdown,i as toc};
-//# sourceMappingURL=剧情管理的探索之路-BXJCCttN.js.map
+//# sourceMappingURL=剧情管理的探索之路-CPxWx1uu.js.map
