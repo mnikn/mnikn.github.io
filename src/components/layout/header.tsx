@@ -17,7 +17,14 @@ export function Header() {
           <NavigationMenuList className="overflow-auto">
             <div className="flex items-center max-sm:flex-col">
               <NavigationMenuItem>
-                <Link to="/" className="text-lg font-bold mr-4 text-center flex items-center">
+                <Link
+                  to="/"
+                  className="text-3xl font-bold mr-4 text-center flex items-center overflow-hidden mt-2"
+                  title="Mnikn's World"
+                  style={{
+                    fontFamily: 'fantasy',
+                  }}
+                >
                   Mnikn's World
                 </Link>
               </NavigationMenuItem>
